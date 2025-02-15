@@ -3,7 +3,7 @@
 <head>
     <style>
         body {
-            background: linear-gradient(45deg, #ff99cc, #ff6699);
+            background: linear-gradient(45deg, #ff99cc, #7a0129);
             height: 100vh;
             display: flex;
             justify-content: center;
@@ -14,14 +14,21 @@
         
         .container {
             text-align: center;
+            transition: opacity 0.3s ease;
+        }
+        
+        .container.hide {
+            opacity: 0;
+            pointer-events: none;
         }
         
         a {
-            font-size: 2em;
+            font-size: 2.5em;
             color: white;
             text-decoration: none;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
             animation: pulse 2s infinite;
+            cursor: pointer;
         }
         
         .modal {
@@ -39,8 +46,8 @@
         
         .content {
             background: white;
-            padding: 30px 50px;
-            border-radius: 20px;
+            padding: 40px 60px;
+            border-radius: 25px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
             transform: scale(0);
             animation: modalOpen 0.3s forwards;
@@ -48,32 +55,32 @@
         
         h2 {
             color: #ff3366;
-            font-size: 2em;
+            font-size: 2.5em;
             margin-bottom: 30px;
         }
         
         .buttons {
             display: flex;
-            gap: 20px;
+            gap: 25px;
             justify-content: center;
         }
         
         button {
             border: none;
-            padding: 15px 30px;
-            border-radius: 15px;
-            font-size: 1.2em;
+            padding: 20px 40px;
+            border-radius: 20px;
+            font-size: 1.5em;
             cursor: pointer;
             transition: all 0.3s;
         }
         
         #evetBtn {
-            background: #ff3366;
+            background: #30aa00;
             color: white;
         }
         
         #hayirBtn {
-            background: #666;
+            background: #750000;
             color: white;
             transition: all 0.1s;
             position: relative;
@@ -81,8 +88,8 @@
         
         .hearts span {
             position: fixed;
-            font-size: 30px;
-            animation: heartFloat 3s linear forwards;
+            font-size: 50px;
+            animation: heartFloat 1.5s linear forwards;
             opacity: 0;
         }
         
@@ -104,15 +111,15 @@
 <body>
 
 <div class="container">
-    <a href="#" onclick="showModal()">Beni Tıkla! 😊</a>
+    <a href="#" onclick="showModal()">TIKLA✊🏿✊🏿</a>
 </div>
 
 <div class="modal" id="modal">
     <div class="content">
-        <h2>Beni seviyor musun? 🥰</h2>
+        <h2>Beni sevon mu🥰🦶🏿🦶🏿</h2>
         <div class="buttons">
-            <button id="evetBtn" onclick="showHearts()">Tabii ki Evet! ❤️</button>
-            <button id="hayirBtn" onmouseover="moveButton()" onclick="moveButton()">Hiç Sevmem! 😒</button>
+            <button id="evetBtn" onclick="showHearts()">EVET🫶🫶🦶🏿🦶🏿🦶🏿</button>
+            <button id="hayirBtn" onclick="moveButton()">hayir😒🖕🖕👅</button>
         </div>
     </div>
 </div>
@@ -122,38 +129,39 @@
 <script>
 function showModal() {
     const modal = document.getElementById('modal');
+    const container = document.querySelector('.container');
+    container.classList.add('hide');
+    setTimeout(() => {
+        container.style.display = 'none';
+    }, 300);
     modal.style.display = 'flex';
 }
 
 let clickCount = 0;
-const originalText = "Hiç Sevmem! 😒";
-const messages = ["Emin misin? 😕", "Yanlış buton! 😡", "Tekrar düşün! 😤", "Pes etmiyorum! 😠"];
+const messages = ["NEHAYIRBASMASUNA", "basma suna🖕🏾", "BOK🫶🏿🫶🏿", "omas👎🏿"];
 
 function moveButton() {
     const hayirBtn = document.getElementById('hayirBtn');
-    clickCount++;
+    const evetBtn = document.getElementById('evetBtn');
     
-    // Butonu hareket ettir
+    clickCount++;
+    const messageIndex = Math.min(clickCount - 1, messages.length - 1);
+    
+    // Buton hareket ve boyut ayarları
     const x = Math.random() * 300 - 150;
     const y = Math.random() * 200 - 100;
-    hayirBtn.style.transform = `translate(${x}%, ${y}%)`;
+    hayirBtn.style.transform = `translate(${x}%, ${y}%) scale(${Math.max(0.3, 1 - clickCount*0.2)})`;
     
-    // Metni değiştir
-    if(clickCount > 2) {
-        hayirBtn.innerText = messages[Math.min(clickCount-3, messages.length-1)];
-    }
+    // Evet butonu büyütme
+    evetBtn.style.transform = `scale(${1 + clickCount*0.4})`;
     
-    // Boyutu küçült
-    hayirBtn.style.transform += ` scale(${Math.max(0.5, 1 - clickCount*0.1)})`;
-    
-    // Evet butonunu büyüt
-    document.getElementById('evetBtn').style.transform = `scale(${1 + clickCount*0.2})`;
+    // Mesaj değiştirme
+    hayirBtn.innerText = messages[messageIndex];
 }
 
 function showHearts() {
     document.getElementById('modal').style.display = 'none';
     
-    // Kalpleri oluştur
     const hearts = document.getElementById('hearts');
     for(let i = 0; i < 50; i++) {
         setTimeout(() => {
@@ -161,16 +169,14 @@ function showHearts() {
             heart.innerHTML = '❤️';
             heart.style.left = Math.random() * 95 + '%';
             heart.style.color = `hsl(${Math.random()*360}deg, 100%, 60%)`;
-            heart.style.animation = `heartFloat ${2+Math.random()*2}s linear`;
+            heart.style.animation = `heartFloat ${1+Math.random()}s linear`;
             hearts.appendChild(heart);
-            
-            setTimeout(() => heart.remove(), 3000);
-        }, i * 100);
+            setTimeout(() => heart.remove(), 1500);
+        }, i * 50);
     }
     
-    // Mesaj göster
     const message = document.createElement('div');
-    message.innerHTML = 'Biliyordum! 😍💖<br>Ben de seni seviyorum!';
+    message.innerHTML = 'YYPYOYIYYPYIYPYIO 😍💖<br>Ben de seni sevom askim yupuuipi';
     message.style.position = 'fixed';
     message.style.top = '50%';
     message.style.left = '50%';
